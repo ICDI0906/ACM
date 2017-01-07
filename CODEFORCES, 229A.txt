@@ -1,0 +1,130 @@
+#pragma warning(disable:4996)
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <set>
+#include <climits>
+#include <queue>
+#include <bitset>
+#include <cstring>
+#include <string>
+#include <ctime>
+#include <stack>
+#include <cstdlib>
+#define mod 342307123
+typedef long long ll;
+using namespace std;
+int n, m;
+char dat[105][10005];
+vector<int> g[105];
+int cnt[10005];
+int ans = 0;
+bool  input()
+{
+    int flag = 0;
+    int _flag = 0;
+    for (int i = 0; i < n; i++)
+    {
+        flag = 0;
+        for (int j = 0; j < m; j++)
+        {
+            scanf("%c",&dat[i][j]);
+            if (dat[i][j] == '1')
+            {
+                flag = 1;
+                g[i].push_back(j);
+                ++cnt[j];
+            }
+        }
+        g[i].push_back(m);
+        if (flag == 0) _flag = 1;
+        getchar();
+    }
+    return (bool)_flag;
+}
+void solve()
+{
+
+    int sum;
+    for (int i = 0; i < m; i++)
+    {
+        sum = 0;
+        int tmp;
+        for (int j = 0; j < n; j++)
+        {
+            if (dat[j][i] == '1')continue;
+            else
+            {
+                tmp = INT_MAX;
+                int index = upper_bound(g[j].begin(), g[j].end(), i)-g[j].begin(); // >
+                index = g[j][index - 1];
+                //cout << "index1: " << index << endl;
+                if (index != -1)
+                {
+                    //
+                    tmp = min(tmp, i - index);
+                    tmp = min(tmp, g [j][1]+ m - i);
+                }
+                index = (upper_bound(g[j].begin(), g[j].end(), i))-g[j].begin();
+                index= g[j][index];
+                if (index != m)
+                {
+                    tmp = min(tmp, index - i);
+                    tmp = min(tmp, i + m -g[j][g[j].size()-2]);
+                }
+                else
+                {
+                    tmp=min(tmp,g[j][1]+m-i);
+                }
+                sum += tmp;
+            }
+            }
+           // cout<<"ans:"<<ans<<endl;
+            ans = min(ans, sum);
+            //cout << "ans:" << ans<<endl;
+        }
+}
+
+void init()
+{
+    for (int i = 0; i < n; i++)
+    {
+        g[i].clear();
+        g[i].push_back(-1);
+    }
+    memset(cnt, 0, sizeof cnt);
+}
+int main()
+{
+ //  freopen("in.txt","r",stdin);
+ // freopen("out.txt","w",stdout);
+    while (scanf("%d %d", &n, &m) == 2)
+    {
+        getchar();
+        init();
+        ans = INT_MAX;
+        if (input())
+        {
+            puts("-1");
+        }
+        else
+        {
+            solve();
+            printf("%d\n", ans);
+        }
+    }
+    return 0;
+}
+/*
+3 2
+10
+11
+01
+
+
+*/
+

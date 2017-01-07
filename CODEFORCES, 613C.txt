@@ -1,0 +1,70 @@
+#pragma warning(disable:4996)
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <set>
+#include <queue>
+#include <bitset>
+#include <cstring>
+#include <string>
+#include <ctime>
+#include <stack>
+#include <cstdlib>
+#define mod 342307123
+typedef long long ll;
+using namespace std;
+int cnt[27];
+int n;
+int gcd(int a, int b)
+{
+	return b==0?a:gcd(b, a%b);
+}
+int main()
+{
+	int flag = 0;
+	int t=0;
+	while (scanf("%d", &n) == 1)
+	{
+		flag = 0;
+		t=0;
+		for (int i = 0; i < n; i++)
+		{
+			scanf("%d", &cnt[i]);
+			if (cnt[i]%2==1) {
+                    t=i+1;
+                    flag++;
+			}
+		}
+		if (flag>1)
+		{
+			puts("0");
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < cnt[i]; j++)
+					printf("%c", 'a' + i);
+			puts("");
+		}
+		else
+		{
+			int ans = cnt[0];
+			for (int i = 1; i < n; i++)
+			{
+				ans = gcd(ans, cnt[i]);
+			}
+			printf("%d\n", ans);
+            if(ans%2==0) ans/=2;
+			for (int k = 0; k < ans; k++)
+			{
+				for (int i=0;i<n;i++) if (cnt[i]%2==0) for (int j=0;j<cnt[i]/ans/2;j++) printf("%c",'a'+i);
+                if (t) for (int i=0;i<cnt[t-1]/ans;i++) printf("%c",'a'+(t-1));
+		        for (int i=n-1;i>=0;i--)if(cnt[i]%2==0)for (int j=0;j<cnt[i]/ans/2;j++) printf("%c",'a'+i);
+
+            }
+            printf("\n");
+		}
+	}
+	return 0;
+}

@@ -1,0 +1,140 @@
+// spfa
+#pragma warning(disable:4996)
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <set>
+#include <climits>
+#include <queue>
+#include <bitset>
+#include <cstring>
+#include <string>
+#include <ctime>
+#include <stack>
+#include <cstdlib>
+#define mod 342307123
+typedef long long ll;
+using namespace std;
+int g[405][405];
+int dist[405];
+int vis[405];
+int n,m;
+vector<int>sec_g[405];
+void init()
+{
+    memset(g,-1,sizeof g);
+    for(int i=0; i<=n; i++) sec_g[i].clear();
+}
+void input()
+{
+    for (int i=0; i<m; i++)
+    {
+        int x,y;
+        scanf("%d%d",&x,&y);
+        g[x][y]=1;
+        g[y][x]=1;
+    }
+}
+void make_map()
+{
+    for(int i=1; i<=n; i++)
+    {
+        for(int j=1; j<=n; j++)
+        {
+            if(i!=j&&g[i][j]==-1)
+            {
+                sec_g[i].push_back(j);
+                sec_g[j].push_back(i);
+            }
+        }
+    }
+
+}
+void spfa()
+{
+    for (int i=1; i<=n; i++) dist[i]=INT_MAX;
+    memset(vis,0,sizeof vis);
+    queue<int> que;
+    que.push(1);
+    vis[1]=1;
+    dist[1]=0;
+    while(!que.empty())
+    {
+        int u=que.front();
+        que.pop();
+        for(auto p:sec_g[u])
+        {
+                if(dist[u]+1<dist[p])
+                    {
+                        dist[p]=dist[u]+1;
+                        if(!vis[p])
+                        {
+                            vis[p]=1;
+                            que.push(p);
+
+                            }
+                    }
+        }
+    }
+}
+void spfa1()
+{
+    for (int i=1; i<=n; i++) dist[i]=INT_MAX;
+    memset(vis,0,sizeof vis);
+    queue<int> que;
+    que.push(1);
+    vis[1]=1;
+    dist[1]=0;
+    while(!que.empty())
+    {
+        int u=que.front();
+        que.pop();
+        for(int i=1;i<=n;i++)
+        {
+                if(g[u][i]==1&&dist[u]+1<dist[i])
+                    {
+                        dist[i]=dist[u]+1;
+                        if(!vis[i])
+                        {
+                            vis[i]=1;
+                            que.push(i);
+
+                            }
+                    }
+        }
+    }
+}
+int main()
+{
+   // freopen("in.txt","r", stdin);
+     //freopen("out.txt","w",stdout);
+    int ans=0;
+    while (scanf("%d %d", &n, &m) == 2)
+    {
+        ans=0;
+        init();
+        input();
+        if(g[1][n]==1)
+       {
+        make_map();
+        spfa();
+        if(dist[n]==INT_MAX) puts("-1");
+        else printf("%d\n",dist[n]);
+        }
+        else
+        {
+            spfa1();
+            if(dist[n]==INT_MAX) puts("-1");
+            else {
+            printf("%d\n",dist[n]);
+           // for(int i=1;i<=n;i++)
+            }
+        }
+    }
+    return 0;
+}
+

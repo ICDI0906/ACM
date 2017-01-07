@@ -1,0 +1,137 @@
+#pragma warning(disable:4996)
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <set>
+#include <climits>
+#include <queue>
+#include <bitset>
+#include <cstring>
+#include <string>
+#include <ctime>
+#include <stack>
+#include <cstdlib>
+#define mod 342307123
+typedef long long ll;
+using namespace std;
+#define maxn 200005
+int vis[maxn];
+int head[maxn];
+int dist[maxn];
+vector<int> g[maxn];
+int n,m;
+struct  E
+{
+    int to;
+    int w;
+    int next;
+} edge[2*maxn+1];
+int tot=-1;
+void init()
+{
+    memset(head,-1,sizeof head);
+    tot= -1;
+    for(int i=0; i<=n; i++) g[i].clear();
+}
+void add_edge(int u,int v,int w)
+{
+    edge[++tot].to=v;
+    edge[tot].w=w;
+    edge[tot].next=head[u];
+    head[u]=tot++;
+}
+void input()
+{
+    int u,v,w;
+    for(int i=0; i<m; i++)
+    {
+        scanf("%d%d%d",&u,&v,&w);
+        add_edge(u,v,w);
+        add_edge(v,u,w);
+    }
+    for(int i=0; i<n; i++)
+    {
+        int k,x;
+        scanf("%d",&k);
+        for(int j=0; j<k; j++)
+        {
+            scanf("%d",&x);
+            g[i+1].push_back(x);
+        }
+    }/*
+    //debug
+  for(int i=1; i<=n; i++)
+    {
+        for(int j=0; j<g[i].size(); j++)
+        {
+            printf("%d ",g[i][j]);
+        }
+        puts("");
+    }*/
+}
+void spfa()
+{
+    memset(vis,0,sizeof vis);
+    queue<int> que;
+    for(int i=1; i<=n; i++) dist[i]=INT_MAX;
+    int now=0;
+    que.push(1);
+    vis[1]=1;
+    dist[1]=now;
+    while(!que.empty())
+    {
+        int u=que.front();
+        que.pop();
+        vector<int>::iterator p;
+        now=dist[u];
+        if(u!=n)
+        {
+            p=find(g[u].begin(),g[u].end(),now);
+            if(p!=g[u].end())
+            {
+                for(; p!=g[u].end(); ++p)
+                {
+                    if((*p)==now) ++now;
+                    else break;
+                }
+            }
+        }
+        dist[u]=now;
+        // cout<<"u: "<<u<<"dist: "<<dist[u]<<endl;
+        vis[u]=0;
+        for(int i=head[u]; i!=-1; i=edge[i].next)
+        {
+            int v=edge[i].to;
+            if(dist[u]+edge[i].w<dist[v])
+            {
+                dist[v]=dist[u]+edge[i].w;
+                if(!vis[v])
+                {
+                    vis[v]=1;
+                    que.push(v);
+                }
+            }
+
+        }
+    }
+}
+int main()
+{
+//freopen("in.txt","r",stdin);
+//freopen("out.txt","w",stdout);
+
+    while (scanf("%d %d", &n, &m) == 2)
+    {
+        init();
+        input();
+        spfa();
+        if(dist[n]==INT_MAX) puts("-1");
+        else printf("%d\n",dist[n]);
+    }
+    return 0;
+}
+
