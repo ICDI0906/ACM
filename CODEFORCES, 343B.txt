@@ -1,0 +1,51 @@
+#pragma warning(disable:4996)
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <set>
+#include <queue>
+#include <bitset>
+#include <cstring>
+#include <string>
+#include <ctime>
+#include <stack>
+#include <cstdlib>
+#define mod 342307123
+typedef long long ll;
+using namespace std;
+deque<char>que;
+char dat[100005];
+int main()
+{
+	//freopen("in.txt", "r", stdin);
+	//freopen("out.txt", "w", stdout);
+	while (scanf("%s", dat) == 1)
+	{
+
+		int i = 0;
+		int len= strlen(dat);
+		while(!que.empty())que.pop_front();
+		for (i =0;i <len; i++)
+		{
+		    int flag=0;
+		    while(!que.empty())
+            {
+                char op=que.back();
+                if(op==dat[i]){
+                    que.pop_back();
+                    flag=1;
+                }
+                else break;
+            }
+            if(!flag)
+            que.push_back(dat[i]);
+		}
+		if(que.empty()) puts("Yes");
+		else puts("No");
+	}
+	return 0;
+}

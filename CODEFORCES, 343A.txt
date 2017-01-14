@@ -1,0 +1,35 @@
+#pragma warning(disable:4996)
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <set>
+#include <queue>
+#include <bitset>
+#include <cstring>
+#include <string>
+#include <ctime>
+#include <stack>
+#include <cstdlib>
+#define mod 342307123
+typedef long long ll;
+using namespace std;
+ll a, b;
+ll solve(ll a,ll b)
+{
+    if(b==0) return 0;
+    return a/b+solve(b,a%b);
+}
+int main()
+{
+	//freopen("in.txt", "r", stdin);
+	//freopen("out.txt", "w", stdout);
+	while (scanf("%I64d%I64d", &a,&b) == 2)
+	{
+		printf("%I64d\n",solve(a,b));
+	}
+	return 0;
+}
