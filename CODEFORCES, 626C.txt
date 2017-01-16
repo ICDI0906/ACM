@@ -1,0 +1,40 @@
+#pragma warning(disable:4996)
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <set>
+#include <queue>
+#include <bitset>
+#include <cstring>
+#include <string>
+#include <ctime>
+#include <stack>
+#include <cstdlib>
+#define mod 342307123
+typedef long long ll;
+using namespace std;
+ll n, m, ans;
+int main() {
+    while(scanf("%I64d%I64d", &n, &m) == 2) {
+        ans = 0;
+        ll lcm = 6;
+        ll a = 2 * n;
+        ll b = 3 * m;
+        ll tmp = min(a, b);
+        ll ans = max(a, b);
+        ll cnt = 1;
+        while(tmp >= lcm * cnt) {
+            if(a > b) b += 3;
+            else a += 2;
+            tmp = min(a, b);
+            ans = max(a, b);
+            cnt++;
+        }
+        printf("%I64d\n", ans);
+        return 0;
+    }
+}

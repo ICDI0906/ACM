@@ -1,0 +1,57 @@
+#pragma warning(disable:4996)
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <set>
+#include <queue>
+#include <bitset>
+#include <cstring>
+#include <string>
+#include <ctime>
+#include <stack>
+#include <cstdlib>
+#define mod 342307123
+typedef long long ll;
+using namespace std;
+int n, m;
+int b, g, r;
+typedef pair<int, int> pii;
+int main() {
+    while(scanf("%d", &n) == 1) {
+        b = 0, r = 0, g = 0;
+        getchar();
+        char op;
+        for(int i = 0; i < n; i++) {
+            scanf("%c", &op);
+            if(op == 'B')++b;
+            else if(op == 'G')++g;
+            else if(op == 'R')++r;
+        }
+        getchar();
+        if(b && r && g) puts("BGR");
+        else if(b == 0 && r == 0 && g) puts("G");
+        else if(b == 0 && r && g == 0)  puts("R");
+        else if(b && r == 0 && g == 0)  puts("B");
+        else if(b == 0 && r && g) {
+            if(r == 1 && g == 1) puts("B");
+            else if(r > 1 && g == 1)puts("BG");
+            else if(g > 1 && r == 1)puts("BR");
+            else puts("BGR");
+        } else if(b && r == 0 && g) {
+            if(b == 1 && g == 1) puts("R");
+            else if(b > 1 && g == 1)puts("GR");
+            else if(g > 1 && b == 1)puts("BR");
+            else puts("BGR");
+        } else if(b && r  && g == 0) {
+            if(b == 1 && r == 1) puts("G");
+            else if(b > 1 && r == 1)puts("GR");
+            else if(r > 1 && b == 1)puts("BG");
+            else puts("BGR");
+        }
+    }
+    return 0;
+}
