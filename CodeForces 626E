@@ -1,0 +1,77 @@
+#pragma warning(disable:4996)
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <cmath>
+#include <sstream>
+#include <set>
+#include <climits>
+#include <queue>
+#include <bitset>
+#include <cstring>
+#include <string>
+#include <ctime>
+#include <stack>
+#include <cstdlib>
+typedef long long ll;
+using namespace std;
+#define maxn 200005
+ll data[maxn];
+ll sum[maxn];
+int n;
+double ans=-1e9;
+int len=0;
+int pos=0;
+void input()
+{
+    sum[0]=0;
+    for(int i=1; i<=n; i++)
+        scanf("%I64d",&data[i]);
+    sort(data+1,data+n+1);
+    for(int i=1; i<=n; i++)
+        sum[i]=sum[i-1]+data[i];
+    ans=-1e9;
+    len=0,pos=0;
+}
+void solve()
+{
+    int p=0;
+    for(int i=1; i<=n; i++) {
+        int l=0,r=min(i-1,n-i);
+        p=0;
+        while(r>=l) {
+            int mid=(l+r)>>1;
+            int midd=mid-1;
+            double tmp1=1.0*(sum[i]-sum[i-mid-1]+sum[n]-sum[n-mid])/(2*mid+1)-data[i];
+            double tmp2=1.0*(sum[i]-sum[i-midd-1]+sum[n]-sum[n-midd])/(2*midd+1)-data[i];
+        if(tmp1<tmp2) r=mid-1;
+        else l=mid+1,p=mid;
+        }
+        double tmp=1.0*(sum[n]-sum[n-p] + sum[i]-sum[i-p-1])/(2*p+1)-data[i];
+        if(ans<tmp) {
+          // cout<<"zhang"<<endl;
+            ans = tmp;
+            len=p;
+            pos=i;
+        }
+    }
+
+}
+int main()
+{
+    // freopen("in.txt","r",stdin);
+    //freopen("out.txt","w",stdout);
+    while(scanf("%d",&n)==1) {
+        input();
+        solve();
+        cout<<len*2+1<<endl;
+     //   cout<<"pos:"<<pos<<endl;
+	for(int i=pos-len; i<=pos; i++) cout<<data[i]<<" ";
+	for(int i=n-len+1; i<=n; i++) cout<<data[i]<<" ";
+	cout<<endl;
+    }
+    return 0;
+}
+
